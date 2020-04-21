@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<br />
+	<p:growl id="growl" showDetail="true" sticky="true" />
+
+	<h:form id="form">
+
+		<p:dataTable var="procedimento" id="dataProcedimento"
+			value="#{procedimentoBean.procedimentos}" selectionMode="single"
+			rowKey="#{procedimento.id}" paginator="true" rows="10"
+			paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+			widgetVar="procedimentoTable" multiViewState="true"
+			selection="#{procedimentoBean.procedimento}"
+			rowsPerPageTemplate="10,15,25,50,100" lazy="true">
+
+			<p:ajax event="rowSelect" Listener="#{procedimentoBean}"
+				update=":form:fromgialog2:pangialog" process="@this"
+				oncomplete="PF('dlg2').show()" />
+
+			<p:column headerText="ID" style="width:60px">
+				<h:outputText value="#{procedimento.id}" />
+			</p:column>
+			<p:column headerText="categoria" style="width:170px">
+				<h:outputText value="#{procedimento.categoria}" />
+			</p:column>
+			<p:column headerText="Titulo">
+				<h:outputText value="#{procedimento.titulo}" />
+			</p:column>
+
+			<p:column headerText="Resumo">
+				<h:outputText value="#{procedimento.resumo}">
+				</h:outputText>
+			</p:column>
+
+
+			<p:column headerText="Atualização" style="width:120px">
+				<h:outputText value="#{procedimento.data_atualizacao}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="PDF" style="width:60px">
+				<p:commandLink>
+					<h:graphicImage id="imagens" library="imagens" name="pdf.png"
+						width="20" height="25" align="center" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column style="width:30px">
+				<p:commandButton update=":form:pangialog" type="button"
+					icon="fa fa-search" oncomplete="PF('edit').show()" process="@this">
+					<f:setPropertyActionListener value="#{procedimento}"
+						target="#{procedimentoBean.selectProcedimento}" />
+
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+
+		<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA VISUALIZAR O RESUMO DO PROCEDIMENTO -->
+
+		<p:dialog header="Resumo do Procedimento" widgetVar="dlg2"
+			resizable="false" modal="true" height="500" width="800">
+
+			<h:form id="fromgialog2">
+				<p:panel id="pangialog" style="width:98%">
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h3>Titulo:</h3>
+						<p:outputLabel id="titulo" style="width:540px"
+							value="#{procedimentoBean.procedimento.titulo}" />
+
+
+						<h3>Resumo:</h3>
+						<p:outputLabel id="resumo" rows="10" cols="50" queryDelay="750"
+							minQueryLength="4" style="width:540px" maxlength="255"
+							required="true" value="#{procedimentoBean.procedimento.resumo}" />
+
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+
+		<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA EDITAR PROCEDIMENTO CADASTRADO -->
+
+		<p:dialog header="Editar Procedimento" widgetVar="edit"
+			resizable="false" modal="true" height="500" width="800">
+
+			<p:outputPanel id="pangialog1" style="width:98%">
+				<h:panelGrid columns="2"
+					rendered="#{not empty procedimentoBean.selectProcedimento}"
+					columnClasses="label,value">>
+
+									<p:outputLabel for="id" value="ID " />
+					<p:outputLabel id="id" style="width:540px"
+						value="#{procedimentoBean.selectProcedimento.id}" />
+
+					<p:outputLabel for="titulo" value="Titulo: " />
+					<p:inputText id="titulo" style="width:540px"
+						value="#{procedimentoBean.selectProcedimento.titulo}" />
+
+					<p:outputLabel for="categoria" value="Categoria: " />
+					<p:selectOneMenu id="categoria"
+						value="#{procedimentoBean.selectProcedimento.categoria}"
+						style="width:520px">
+
+						<f:selectItem itemValue="" itemLabel="Selecione" />
+						<f:selectItem itemValue="Software" itemLabel="Software" />
+						<f:selectItem itemValue="Redes" itemLabel="Redes" />
+						<f:selectItem itemValue="Hardware" itemLabel="Hardware" />
+						<f:selectItem itemValue="Gerencial" itemLabel="Gerencial" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="subcategoria" value="Subcategoria: " />
+					<p:selectOneMenu id="subcategoria" style="width:520px"
+						value="#{procedimentoBean.selectProcedimento.subcategoria}">
+
+						<f:selectItem itemValue="" itemLabel="Selecione" />
+						<f:selectItem itemValue="ERP" itemLabel="ERP" />
+						<f:selectItem itemValue="Windows" itemLabel="Windows" />
+						<f:selectItem itemValue="Pacote Office" itemLabel="Pacote Office" />
+						<f:selectItem itemValue="Itil" itemLabel="Itil" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="resumo" value="Resumo " />
+					<p:inputTextarea id="resumo" rows="10" cols="50" queryDelay="750"
+						minQueryLength="4" style="width:540px" maxlength="255"
+						required="true"
+						value="#{procedimentoBean.selectProcedimento.resumo}" />
+
+					<h:outputLabel for="arquivo" value="Arquivo: " />
+
+					<p:fileUpload
+						fileUploadListener="#{fileUploadView.handleFileUpload}"
+						mode="advanced" dragDropSupport="false" sizeLimit="100000"
+						fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx)$/" />
+				</h:panelGrid>
+				<p:spacer />
+				<div>
+					<p:toolbar style="margin-top: 5px; margin-bottom:5px">
+						<f:facet name="left">
+
+							<p:commandButton value="Editar" action="#{procedimentoBean}"
+								icon="fa fa-edit" aria-hidden="true" update=":form" />
+
+							<span class="ui-separator" />
+
+							<p:commandButton type="button" title="Excluir"
+								icon="fa fa-trash-o" actionListener="#{procedimentoBean}"
+								process="@this" update=":form">
+								<p:confirm header="Confirmation"
+									message="Realmente deseja excluir o procedimento?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</div>
+			</p:outputPanel>
+		</p:dialog>
+
+		<div>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					process="datauser" update="form:growl :form:datauser" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</div>
+	</h:form>
+</ui:composition>

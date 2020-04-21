@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<br />
+
+	<div>
+		<p:growl id="growl" showDetail="true" sticky="true" />
+
+		<h:form id="form">
+
+			<p:dataTable id="datauser" var="usuario"
+				value="#{usuarioBean.usuarios}" selectionMode="single"
+				rowKey="#{usuario.id}" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				widgetVar="usuarioTable" multiViewState="true"
+				selection="#{usuarioBean.usuario}"
+				rowsPerPageTemplate="10,15,25,50,100" lazy="true">
+
+				<p:ajax event="rowSelect" Listener="#{usuarioBean}" update=":form"
+					process="@this" oncomplete="PF('edit').show()" />
+
+				<p:column headerText="ID" style="width:60px">
+					<h:outputText value="#{usuario.id}" />
+				</p:column>
+				<p:column headerText="Nome">
+					<h:outputText value="#{usuario.nome}" />
+				</p:column>
+				<p:column headerText="E-mail">
+					<h:outputText value="#{usuario.email}" />
+				</p:column>
+				<p:column headerText="Privilegio" style="width:190px">
+					<h:outputText value="#{usuario.privilegio}" />
+				</p:column>
+				<p:column headerText="Data do Cadastro" style="width:150px">
+					<h:outputText value="#{usuario.data}">
+						<f:convertDateTime dateStyle="long" pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:30px">
+					<p:commandButton type="button" icon="fa fa-search"
+						onclick="PF('edit').show()" update="fromgialog1:fromgialog2:pangialog1">
+						<f:setPropertyActionListener value="#{usuario}"
+							target="#{usuarioBean.usuarios}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+
+			<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA EDITAR UM USUÁRIO CADASTRADO -->
+
+			<div>
+				<h:form id="fromgialog1">
+					<p:dialog header="Editar Usuários" widgetVar="edit"
+						resizable="false" modal="true" height="270" width="600">
+
+						<h:form id="fromgialog2">
+							<p:panel id="pangialog1" style="width:98%">
+								<h:panelGrid columns="2" cellpadding="2">
+
+									<p:outputLabel for="id" value="Id: " />
+									<p:outputLabel id="id" value="#{usuarioBean.usuario.id}"
+										style="width:150%" required="true" />
+
+									<p:outputLabel for="nome" value="Nome: " />
+									<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
+										style="width:150%" required="true" />
+
+									<p:outputLabel for="email" value="E-mail: " />
+									<p:inputText id="email" value="#{usuarioBean.usuario.email}"
+										style="width:150%" size="30" maxlength="45" required="true"
+										requiredMessage="Digite um E-mail válido"
+										validatorMessage="Email inválido.">
+										<f:validateRegex
+											pattern="[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,3})" />
+										<p:ajax event="blur" />
+									</p:inputText>
+
+									<p:outputLabel for="privilegio" value="Privilegio: " />
+									<p:selectOneMenu id="privilegio"
+										value="#{usuarioBean.usuario.privilegio}" style="width:110%"
+										required="true">
+										<f:selectItem itemValue="" itemLabel="Selecione" />
+										<f:selectItem itemValue="Suporte" itemLabel="Suporte" />
+										<f:selectItem itemValue="Administrador"
+											itemLabel="Administrador" />
+
+									</p:selectOneMenu>
+
+									<p:outputLabel for="senha" value="Senha: " />
+									<p:password id="senha" value="#{usuarioBean.usuario.senha}"
+										style="width:110%" feedback="true"
+										promptLabel="Digite a senha" weakLabel="Senha fraca"
+										goodLabel="Nível intermediário" strongLabel="Senha forte"
+										required="true" />
+
+									<p:outputLabel for="confsenha" value="Confirmar Senha :" />
+									<p:password id="confsenha"
+										value="#{usuarioBean.confirmarSenha}" style="width:110%"
+										required="true" />
+
+								</h:panelGrid>
+
+								<div>
+									<p:toolbar style="margin-top: 5px; margin-bottom:5px">
+										<f:facet name="left">
+
+											<p:commandButton id="atualizar" value="Atualizar"
+												action="#{usuarioBean.atualizar()}" icon="fa fa-upload"
+												aria-hidden="true"
+												update="growl :form:datauser :form:fromgialog1:fromgialog2:pangialog1" />
+
+											<span class="ui-separator"> <span
+												class="ui-icon ui-icon-grip-dotted-vertical" />
+											</span>
+
+
+											<p:commandButton id="excluir" value="Excluir"
+												action="#{usuarioBean.excluir()}" icon="fa fa-trash-o"
+												aria-hidden="true"
+												update="growl :form:datauser :form:fromgialog1:fromgialog2:pangialog1">
+												<p:confirm header="Confirmation"
+													message="Realmente deseja excluir o procedimento?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+
+										</f:facet>
+									</p:toolbar>
+								</div>
+							</p:panel>
+						</h:form>
+					</p:dialog>
+				</h:form>
+			</div>
+			<div>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+						process="datauser" update="growl :form:fromgialog1:fromgialog2:pangialog1" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</div>
+
+		</h:form>
+	</div>
+</ui:composition>

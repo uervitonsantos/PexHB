@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<!-- CODIGO QUE DEFINE A BARRA DE MENU PRINCIPAL -->
+
+	<div>
+
+		<h:form>
+			<p:growl id="messages" />
+
+			<p:menubar>
+
+				<p:menuitem id="home" value="Home" outcome="paginainicial.xhtml"
+					icon="fa fa-home" />
+
+				<p:submenu id="arquivo" label="Arquivo" icon="fa fa-file-o">
+					
+					<p:submenu id="contatos" label="Contatos" icon="fa fa-list">
+						<p:menuitem id="contatosempresa" value="Contatos da Empresa"
+							title="Contatos da Empresa" url="#" />
+						<p:menuitem id="contatosfornecedor" value="Fornecedor"
+							title="Contatos dos Fornecedores de Serviços" url="#" />
+						<p:menuitem id="contatosadministrador" value="Administrador"
+							title="Contatos dos Administradores" url="#" />
+					</p:submenu>
+
+					<p:submenu id="novousuario" label="Novo Usuario"
+						icon="fa fa-user-plus">
+						<p:menuitem id="cadastrarusuario" value="Cadastrar"
+							icon="fa fa-file-o" outcome="cadastrousuario.xhtml" />
+						<p:separator />
+						<p:menuitem id="pesquisarusuario" value="Pesquisar"
+							title="Pesquisar Usuarios" outcome="cadastrousuario.xhtml"
+							icon="fa fa-search" />
+					</p:submenu>
+
+				</p:submenu>
+
+				<p:submenu id="relatorio" label="Relatório"
+					outcome="relatoriografico.xhtml">
+					<p:menuitem id="relatoriograico" value="Relatório Grafico"
+						title="Relatório Grafico" outcome="relatoriografico.xhtml" />
+
+					<p:menuitem id="gerarrelatorio" value="Gerar Relatório"
+						title="Gerar Relatório" outcome="gerarrelatorio.xhtml" />
+				</p:submenu>
+
+				<p:submenu id="ajuda" label="Ajuda" icon="fa fa-gear">
+					<p:menuitem id="aberturachamado" value="Abertura de Chamado"
+						title="Abertura de Chamado" url="#" />
+					<p:menuitem id="manual" value="Manual do Sistema"
+						title="Manual do Sistema" />
+				</p:submenu>
+
+				<p:menuitem id="sair" value="Sair" outcome="login.xhtml"
+					icon="fa fa-sign-out" />
+
+			</p:menubar>
+		</h:form>
+	</div>
+
+</ui:composition>

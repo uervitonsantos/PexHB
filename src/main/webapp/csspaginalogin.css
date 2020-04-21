@@ -1,0 +1,22 @@
+@CHARSET "ISO-8859-1";
+
+.ui-widget {
+	font-size: 14px !important;
+}
+
+body {
+	margin-top: 14%;
+	background-image: url("./resources/imagens/modern.jpeg");
+	background-size: cover;
+	color: #000000;
+	background-color: Black;
+	background-repeat: repeat;
+	background-color: Black;
+}
+
+b {
+	font-size: 25px;
+	color: white;
+}
+
+

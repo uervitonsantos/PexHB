@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="StyleSheet" type="text/css" href="../csspaginalogin.css"
+		media="screen" />
+
+	<title>Kambo</title>
+
+</h:head>
+<h:body>
+
+	<div id="login" align="center" style="margin-top: 10%">
+
+		<p:growl id="mensagem" showDetail="true" sticky="true" />
+
+		<h:form>
+			<h:form>
+
+				<p:panel id="basic"
+					style="width:25%;
+					box-shadow: 5px 3px 42px #000; background: rgba(0, 0, 0, .5);">
+
+					<h:graphicImage id="imagens" library="imagens" name="user-icon.png"
+						style="width:40%; height:45%; align:center; display:block; margin:-75px auto 0 auto" />
+
+					<b>Faça Login</b>
+
+					<p:inputText id="email" placeholder="Insira o Email"
+						style="margin-top:17px; margin-bottom:5px; width:98%; maxlength:25; height: 25px"
+						value="#{loginBean.usuariologado.email}" required="true"
+						requiredMessage="O Login não foi informado!"
+						validatorMessage="Tamanho máximo do campo Login excedido!">
+						<f:validateLength maximum="30" />
+					</p:inputText>
+
+
+					<p:password id="senha" placeholder="Password"
+						style="margin-top:5px; margin-bottom:17px; width:98%; maxlength:25; height: 25px"
+						value="#{loginBean.usuariologado.senha}" required="true"
+						requiredMessage="A senha não foi informada!"
+						validatorMessage="Tamanho máximo do campo Senha excedido!">
+						<f:validateLength maximum="25" />
+					</p:password>
+
+
+
+					<p:commandButton value="LOGIN"
+						style="margin-top: 17px; margin-bottom:13px; width:100%; height: 40px"
+						action="#{loginBean.autenticar()}" update=":mensagem"
+						oncomplete="handleLoginRequest(xhr, status, args)" />
+
+					<h:link value="Esqueceu a senha?" outcome="login"
+						style="font-size: 15px; color: white;" />
+
+				</p:panel>
+			</h:form>
+		</h:form>
+	</div>
+</h:body>
+</html>

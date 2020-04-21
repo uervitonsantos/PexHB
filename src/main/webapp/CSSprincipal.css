@@ -1,0 +1,28 @@
+@CHARSET "ISO-8859-1";
+
+.ui-widget {
+	font-size: 14px !important;
+}
+
+#topo {
+	margin-top: 0%;
+	height: 65px;
+	background-image: linear-gradient(to right, #ade4fc, #004080);
+}
+
+#barramenu {
+	margin-top: 0%;
+}
+
+#corpo {
+	
+}
+
+#rodape {
+	background-size: cover;
+	color: #ffffff;
+	height: 65px;
+	margin-top: 10px;
+	padding-top: 1px;
+	background-color: #c0c0c0;
+}
