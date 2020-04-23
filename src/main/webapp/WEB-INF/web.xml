@@ -27,7 +27,7 @@
 
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>bootstrap</param-value>
+		<param-value>ui-darkness</param-value>
 	</context-param>
 
 	<!-- Estágio do Projeto - "Development" ou "Production" -->
