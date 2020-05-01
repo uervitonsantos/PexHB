@@ -56,6 +56,19 @@ public class Usuario implements Serializable, EntidadeBase {
 	@NotNull
 	@Column(name = "SENHA", nullable = false, length = 25)
 	private String senha;
+	
+	public Usuario() {
+		
+	}
+	
+	public Usuario(Integer id, String nome, String email, String privilegio, Date data, String senha ) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.privilegio = privilegio;
+		this.data = data;
+		this.senha = senha;
+	}
 
 	@Override
 	public Integer getId() {

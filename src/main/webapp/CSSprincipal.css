@@ -7,15 +7,16 @@
 #topo {
 	margin-top: 0%;
 	height: 65px;
-	background-image: linear-gradient(to right, #ade4fc, #004080);
+	background-image: linear-gradient(to right, #ff8000, #ff3333);
 }
+
 
 #barramenu {
 	margin-top: 0%;
 }
 
 #corpo {
-	
+	background-color: blue;
 }
 
 #rodape {

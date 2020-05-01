@@ -12,7 +12,6 @@
 		<h:form>
 			<!-- O CODIGO ABAIXO É REFERENTE AOS BOTÕES PARA CADASTRAR UM NOVO USUÁRIO e PESQUISAR USUARIO JÁ CADASTRADO-->
 
-			<p:growl id="growl" showDetail="true" sticky="true" />
 
 			<p:toolbar>
 				<p:toolbarGroup>
@@ -26,7 +25,7 @@
 
 					<p:inputText id="globalFilter"
 						onkeyup="PF('usuarioTable').filter()"
-						value="#{usuarioBean.usuario.email}" style="width:450px" size="30"
+						value="#{usuarioBean.selectedUsuario.email}" style="width:450px" size="30"
 						maxlength="45" required="true"
 						requiredMessage="Digite um E-mail válido"
 						validatorMessage="Email inválido."
@@ -37,7 +36,7 @@
 					</p:inputText>
 
 					<p:commandButton icon="fa fa-search"
-						action="#{usuarioBean}" update="growl" />
+						action="#{usuarioBean.selectedUsuario}" update=":growl" />
 
 				</p:toolbarGroup>
 			</p:toolbar>
@@ -49,7 +48,7 @@
 	<div>
 		<h:form id="frmcaduser">
 			<p:dialog header="Cadastro de Usuários" widgetVar="user2"
-				resizable="false" modal="true" height="250" width="600">
+				resizable="false" modal="true" height="270" width="600">
 
 				<h:form id="forcaruser">
 					<p:panel id="paineluser" style="width:98%">
@@ -96,7 +95,7 @@
 								<f:facet name="left">
 									<p:commandButton value="salvar"
 										action="#{usuarioBean.salvar()}" icon="fa fa-floppy-o"
-										update="growl :form:datauser :form" />
+										update=":growl " />
 									<span class="ui-separator"> <span
 										class="ui-icon ui-icon-grip-dotted-vertical" />
 									</span>

@@ -29,7 +29,7 @@ public class UsuarioBean implements Serializable {
 	private Usuario usuario = new Usuario();
 	private String confirmarSenha;
 	private Usuario selectedUsuario;
-    private List<Usuario> selectedUsuarios;
+	private List<Usuario> selectedUsuarios;
 
 	// METODO QUE LISTA TODOS OS USUARIOS CADASTRADOS
 	public List<Usuario> getusuarios() throws Exception {
