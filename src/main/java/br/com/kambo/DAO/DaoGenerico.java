@@ -9,7 +9,7 @@ import javax.persistence.Query;
 
 public class DaoGenerico<TIPO extends EntidadeBase> {
 
-	@PersistenceContext(unitName = "KamboPU")
+	@PersistenceContext(unitName = "PexHBPU")
 	public EntityManager em;
 	private List<TIPO> listaObjetos;
 	protected Class <TIPO> classePersistente;

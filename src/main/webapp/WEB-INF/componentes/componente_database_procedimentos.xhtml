@@ -12,169 +12,218 @@
 
 	<h:form id="form">
 
-		<p:dataTable var="procedimento" id="dataProcedimento"
-			value="#{procedimentoBean.procedimentos}" selectionMode="single"
-			rowKey="#{procedimento.id}" paginator="true" rows="10"
-			paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-			widgetVar="procedimentoTable" multiViewState="true"
-			selection="#{procedimentoBean.procedimento}"
-			rowsPerPageTemplate="10,15,25,50,100" lazy="true">
 
-			<p:ajax event="rowSelect" Listener="#{procedimentoBean}"
-				update=":form:fromgialog2:pangialog" process="@this"
-				oncomplete="PF('dlg2').show()" />
+		<table CELLPADDING="4" CELLSPACING="0" style="width: 100%">
 
-			<p:column headerText="ID" style="width:60px">
-				<h:outputText value="#{procedimento.id}" />
-			</p:column>
-			<p:column headerText="categoria" style="width:170px">
-				<h:outputText value="#{procedimento.categoria}" />
-			</p:column>
-			<p:column headerText="Titulo">
-				<h:outputText value="#{procedimento.titulo}" />
-			</p:column>
+		<tr>
+		<th class="center" ROWSPAN="4"> <p:tieredMenu style="width:220px">
 
-			<p:column headerText="Resumo">
-				<h:outputText value="#{procedimento.resumo}">
-				</h:outputText>
-			</p:column>
+			<p:submenu label="Saldo" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+			<p:submenu label="PIX" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
 
-			<p:column headerText="Atualização" style="width:120px">
-				<h:outputText value="#{procedimento.data_atualizacao}">
-					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-				</h:outputText>
-			</p:column>
-
-			<p:column headerText="PDF" style="width:60px">
-				<p:commandLink>
-					<h:graphicImage id="imagens" library="imagens" name="pdf.png"
-						width="20" height="25" align="center" />
-				</p:commandLink>
-			</p:column>
-
-			<p:column style="width:30px">
-				<p:commandButton update=":form:pangialog" type="button"
-					icon="fa fa-search" oncomplete="PF('edit').show()" process="@this">
-					<f:setPropertyActionListener value="#{procedimento}"
-						target="#{procedimentoBean.selectProcedimento}" />
-
-				</p:commandButton>
-			</p:column>
-		</p:dataTable>
-
-		<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA VISUALIZAR O RESUMO DO PROCEDIMENTO -->
-
-		<p:dialog header="Resumo do Procedimento" widgetVar="dlg2"
-			resizable="false" modal="true" height="500" width="800">
-
-			<h:form id="fromgialog2">
-				<p:panel id="pangialog" style="width:98%">
-					<h:panelGrid columns="2" cellpadding="5">
-
-						<h3>Titulo:</h3>
-						<p:outputLabel id="titulo" style="width:540px"
-							value="#{procedimentoBean.procedimento.titulo}" />
+			<p:submenu label="Extrato" icon="pi pi-clone">
+				<p:menuitem value="Delete" action="#{menuView.delete}" ajax="false"
+					icon="pi pi-times" />
+			</p:submenu>
 
 
-						<h3>Resumo:</h3>
-						<p:outputLabel id="resumo" rows="10" cols="50" queryDelay="750"
-							minQueryLength="4" style="width:540px" maxlength="255"
-							required="true" value="#{procedimentoBean.procedimento.resumo}" />
-
-					</h:panelGrid>
-				</p:panel>
-			</h:form>
-		</p:dialog>
+			<p:submenu label="Investimento" icon="pi pi-home">
+				<p:submenu label="Prime Links">
+					<p:menuitem value="Prime" url="http://www.prime.com.tr" title="xxx" />
+					<p:menuitem value="PrimeFaces" url="http://www.primefaces.org" />
+				</p:submenu>
+				<p:menuitem value="Mobile" />
+			</p:submenu>
 
 
-		<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA EDITAR PROCEDIMENTO CADASTRADO -->
+			<p:submenu label="Cartões" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-		<p:dialog header="Editar Procedimento" widgetVar="edit"
-			resizable="false" modal="true" height="500" width="800">
 
-			<p:outputPanel id="pangialog1" style="width:98%">
-				<h:panelGrid columns="2"
-					rendered="#{not empty procedimentoBean.selectProcedimento}"
-					columnClasses="label,value">>
+			<p:submenu label="Transferencias" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-									<p:outputLabel for="id" value="ID " />
-					<p:outputLabel id="id" style="width:540px"
-						value="#{procedimentoBean.selectProcedimento.id}" />
 
-					<p:outputLabel for="titulo" value="Titulo: " />
-					<p:inputText id="titulo" style="width:540px"
-						value="#{procedimentoBean.selectProcedimento.titulo}" />
+			<p:submenu label="Pagamentos" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-					<p:outputLabel for="categoria" value="Categoria: " />
-					<p:selectOneMenu id="categoria"
-						value="#{procedimentoBean.selectProcedimento.categoria}"
-						style="width:520px">
 
-						<f:selectItem itemValue="" itemLabel="Selecione" />
-						<f:selectItem itemValue="Software" itemLabel="Software" />
-						<f:selectItem itemValue="Redes" itemLabel="Redes" />
-						<f:selectItem itemValue="Hardware" itemLabel="Hardware" />
-						<f:selectItem itemValue="Gerencial" itemLabel="Gerencial" />
+			<p:submenu label="Depósito por boleto" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-					</p:selectOneMenu>
 
-					<p:outputLabel for="subcategoria" value="Subcategoria: " />
-					<p:selectOneMenu id="subcategoria" style="width:520px"
-						value="#{procedimentoBean.selectProcedimento.subcategoria}">
+			<p:submenu label="Conta juridica" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-						<f:selectItem itemValue="" itemLabel="Selecione" />
-						<f:selectItem itemValue="ERP" itemLabel="ERP" />
-						<f:selectItem itemValue="Windows" itemLabel="Windows" />
-						<f:selectItem itemValue="Pacote Office" itemLabel="Pacote Office" />
-						<f:selectItem itemValue="Itil" itemLabel="Itil" />
 
-					</p:selectOneMenu>
+			<p:submenu label="Portabilidade de salario" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-					<p:outputLabel for="resumo" value="Resumo " />
-					<p:inputTextarea id="resumo" rows="10" cols="50" queryDelay="750"
-						minQueryLength="4" style="width:540px" maxlength="255"
-						required="true"
-						value="#{procedimentoBean.selectProcedimento.resumo}" />
 
-					<h:outputLabel for="arquivo" value="Arquivo: " />
+			<p:submenu label="Financiamento" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-					<p:fileUpload
-						fileUploadListener="#{fileUploadView.handleFileUpload}"
-						mode="advanced" dragDropSupport="false" sizeLimit="100000"
-						fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx)$/" />
-				</h:panelGrid>
-				<p:spacer />
-				<div>
-					<p:toolbar style="margin-top: 5px; margin-bottom:5px">
-						<f:facet name="left">
 
-							<p:commandButton value="Editar" action="#{procedimentoBean}"
-								icon="fa fa-edit" aria-hidden="true" update=":form" />
+			<p:submenu label="Debito automático" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-							<span class="ui-separator" />
 
-							<p:commandButton type="button" title="Excluir"
-								icon="fa fa-trash-o" actionListener="#{procedimentoBean}"
-								process="@this" update=":form">
-								<p:confirm header="Confirmation"
-									message="Realmente deseja excluir o procedimento?"
-									icon="ui-icon-alert" />
-							</p:commandButton>
-						</f:facet>
-					</p:toolbar>
-				</div>
-			</p:outputPanel>
-		</p:dialog>
+			<p:submenu label="Consórcio" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
 
-		<div>
-			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-				<p:commandButton value="Sim" type="button"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
-					process="datauser" update="form:growl :form:datauser" />
-				<p:commandButton value="Não" type="button"
-					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			</p:confirmDialog>
-		</div>
+
+			<p:submenu label="Câmbio" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+
+			<p:submenu label="Cashback" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+
+			<p:submenu label="Agendamentos" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+
+			<p:submenu label="Recarga celular" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+
+			<p:submenu label="Empréstimos" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+
+			<p:submenu label="Seguros" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+
+			<p:submenu label="Configurações" icon="pi pi-refresh">
+				<p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" />
+				<p:menuitem value="Update" action="#{menuView.update}"
+					icon="pi pi-refresh" />
+			</p:submenu>
+
+		</p:tieredMenu>
+
+		</th>
+		</tr>
+
+		<tr>
+
+		<td> <table CELLPADDING="4" CELLSPACING="0" style="width: 100px"
+			align="center">
+		<tr>
+		<td ALIGN="right"> <p:panel id="pnl1">
+			<h:graphicImage id="imagens1" library="imagens" name="saldo.png"
+				width="200" height="150" align="center" />
+		</p:panel>
+		</td>
+
+
+		<td ALIGN="right"> <p:panel id="pnl2">
+			<h:graphicImage id="imagens2" library="imagens" name="cred_card.png"
+				width="200" height="150" align="center" />
+		</p:panel>
+		</td>
+
+
+		<td ALIGN="right"> <p:panel id="pnl3">
+			<h:graphicImage id="imagens" library="imagens" name="poupanca.png"
+				width="200" height="150" align="center" />
+		</p:panel>
+		</td>
+
+
+		<td ALIGN="right"> <p:panel id="pnl4">
+			<h:graphicImage id="imagens3" library="imagens" name="emprestimo.png"
+				width="200" height="150" align="center" />
+		</p:panel>
+		</td>
+		</tr>
+
+
+		<tr>
+		<td colspan="2"> <p:pieChart model="#{chartJsView.pieModel}"
+			style="width: 100%; height: 350px;" />
+
+		</td>
+		
+		<td colspan="2"> <p:lineChart model="#{chartJsView.lineModel}" style="width: 100%; height: 350px;"/>
+
+		</td>
+		</tr>
+
+
+		</table>
+
+		</td>
+
+		</tr>
+
+		</table>
+
+
+
+
+
+
+
+
+
+
 	</h:form>
 </ui:composition>

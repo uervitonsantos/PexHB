@@ -7,7 +7,7 @@
 #topo {
 	margin-top: 0%;
 	height: 65px;
-	background-image: linear-gradient(to right, #ff8000, #ff3333);
+	background-image: linear-gradient(to right, #ffffff, #c0c0c0);
 }
 
 
@@ -25,5 +25,5 @@
 	height: 65px;
 	margin-top: 10px;
 	padding-top: 1px;
-	background-color: #c0c0c0;
+	background-color: #0063c6;
 }

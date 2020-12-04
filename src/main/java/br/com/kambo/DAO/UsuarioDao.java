@@ -26,7 +26,7 @@ public class UsuarioDao extends DaoGenerico<Usuario> implements Serializable {
 
 	}
 
-	@PersistenceContext(unitName = "KamboPU")
+	@PersistenceContext(unitName = "PexHBPU")
 	public EntityManager em;
 
 	public Usuario getAutenticar(String email, String senha) {
