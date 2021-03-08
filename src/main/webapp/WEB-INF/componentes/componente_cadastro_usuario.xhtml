@@ -8,57 +8,172 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<br />
+
 	<div>
-		<h:form>
-			<!-- O CODIGO ABAIXO É REFERENTE AOS BOTÕES PARA CADASTRAR UM NOVO USUÁRIO e PESQUISAR USUARIO JÁ CADASTRADO-->
+
+		<p:growl id="growl" />
+
+		<!-- O CODIGO ABAIXO É REFERENTE AOS BOTÕES PARA CADASTRAR UM NOVO USUÁRIO e PESQUISAR USUARIO JÁ CADASTRADO-->
+
+		<p:toolbar>
+			<p:toolbarGroup>
+				<p:commandButton value="Cadastrar Novo Usuário" type="button"
+					onclick="PF('user2').show();" process="@this"
+					icon="fa fa-user-plus" actionListener="#{usuarioBean.novo()}" />
+
+				<span class="ui-separator"> <span
+					class="ui-icon ui-icon-grip-dotted-vertical" />
+				</span>
+
+				<p:inputText id="globalFilter" onkeyup="PF('usuarioTable').filter()"
+					value="#{usuarioBean.selectedUsuario.email}" style="width:450px"
+					size="30" maxlength="45" required="true"
+					requiredMessage="Digite um E-mail válido"
+					validatorMessage="Email inválido."
+					placeholder="Pesquisar usuário por e-mail">
+					<f:validateRegex
+						pattern="[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,3})" />
+					<p:ajax event="blur" />
+				</p:inputText>
+
+				<p:commandButton icon="fa fa-search"
+					action="#{usuarioBean.buscar()}" update=":form" />
+
+			</p:toolbarGroup>
+		</p:toolbar>
 
 
-			<p:toolbar>
-				<p:toolbarGroup>
-					<p:commandButton value="Cadastrar Novo Usuário" type="button"
-						onclick="PF('user2').show();" process="@this"
-						icon="fa fa-user-plus" actionListener="#{usuarioBean.novo()}" />
-
-					<span class="ui-separator"> <span
-						class="ui-icon ui-icon-grip-dotted-vertical" />
-					</span>
-
-					<p:inputText id="globalFilter"
-						onkeyup="PF('usuarioTable').filter()"
-						value="#{usuarioBean.selectedUsuario.email}" style="width:450px" size="30"
-						maxlength="45" required="true"
-						requiredMessage="Digite um E-mail válido"
-						validatorMessage="Email inválido."
-						placeholder="Pesquisar usuário por e-mail">
-						<f:validateRegex
-							pattern="[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,3})" />
-						<p:ajax event="blur" />
-					</p:inputText>
-
-					<p:commandButton icon="fa fa-search"
-						action="#{usuarioBean.selectedUsuario}" update=":growl" />
-
-				</p:toolbarGroup>
-			</p:toolbar>
-		</h:form>
-	</div>
 
 
-	<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA CADASTRO DE UM NOVO USUÁRIO -->
-	<div>
-		<h:form id="frmcaduser">
-			<p:dialog header="Cadastro de Usuários" widgetVar="user2"
-				resizable="false" modal="true" height="270" width="600">
+		<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA CADASTRO DE UM NOVO USUÁRIO -->
 
-				<h:form id="forcaruser">
-					<p:panel id="paineluser" style="width:98%">
+
+		<p:dialog header="Cadastro de Usuários" widgetVar="user2"
+			resizable="false" modal="true" height="270" width="600">
+
+			<h:form id="forcaruser">
+				<p:panel id="paineluser" style="width:98%">
+					<h:panelGrid columns="2" cellpadding="2">
+
+						<p:outputLabel for="nome" value="Nome:" />
+						<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
+							style="width:150%" required="true"
+							requiredMessage="O campo NOME é obrigatório!" />
+
+						<p:outputLabel for="email" value="E-mail:" />
+						<p:inputText id="email" value="#{usuarioBean.usuario.email}"
+							style="width:150%" size="30" maxlength="45" required="true"
+							requiredMessage="O campo E-mail é obrigatório!"
+							validatorMessage="O campo E-mail deve ser preenchido corretamente! Email inválido">
+							<f:validateRegex
+								pattern="[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,3})" />
+							<p:ajax event="blur" />
+						</p:inputText>
+
+						<p:outputLabel for="privilegio" value="Privilegio:" />
+						<p:selectOneMenu id="privilegio"
+							value="#{usuarioBean.usuario.privilegio}" style="width:110%"
+							required="true"
+							requiredMessage="Por favor, selecione o privilégio para o usuário!">
+							<f:selectItem itemValue="" itemLabel="Selecione" />
+							<f:selectItem itemValue="Suporte" itemLabel="Suporte" />
+							<f:selectItem itemValue="Administrador" itemLabel="Administrador" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel for="senha" value="Senha:" />
+						<p:password id="senha" value="#{usuarioBean.usuario.senha}"
+							style="width:110%" feedback="true" promptLabel="Digite a senha"
+							weakLabel="Senha fraca" goodLabel="Nível intermediário"
+							strongLabel="Senha forte" required="true"
+							requiredMessage="O campo senha deve ser preenchido obrigatóriamente! Por favor, insira uma senha para o usuário!" />
+
+						<p:outputLabel for="confsenha" value="Confirmar Senha:" />
+						<p:password id="confsenha" value="#{usuarioBean.confirmarSenha}"
+							style="width:110%" required="true" />
+
+					</h:panelGrid>
+					<div>
+						<p:toolbar style="margin-top: 5px; margin-bottom:5px">
+							<f:facet name="left">
+								<p:commandButton value="salvar" action="#{usuarioBean.salvar()}"
+									icon="fa fa-floppy-o" update=":growl :forcaruser" />
+								<span class="ui-separator"> <span
+									class="ui-icon ui-icon-grip-dotted-vertical" />
+								</span>
+							</f:facet>
+						</p:toolbar>
+					</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+		<br />
+
+
+
+		<!-- O CODIGO ABAIXO É REFERENTE AO DATATABLE PARA VISUALIZAR OS USUÁRIOS CADASTRADOS -->
+
+		<h:form id="form">
+
+			<p:dataTable id="datauser" var="usuario"
+				value="#{usuarioBean.usuarios}" selectionMode="single"
+				rowKey="#{usuario.id}" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				widgetVar="usuarioTable" multiViewState="true"
+				selection="#{usuarioBean.usuario}"
+				rowsPerPageTemplate="10,15,25,50,100" lazy="true">
+
+				<p:ajax event="rowSelect" Listener="#{usuarioBean}" update=":form"
+					process="@this" oncomplete="PF('edit').show()" />
+
+				<p:column headerText="ID" style="width:60px">
+					<h:outputText value="#{usuario.id}" />
+				</p:column>
+				<p:column headerText="Nome">
+					<h:outputText value="#{usuario.nome}" />
+				</p:column>
+				<p:column headerText="E-mail">
+					<h:outputText value="#{usuario.email}" />
+				</p:column>
+				<p:column headerText="Privilegio" style="width:190px">
+					<h:outputText value="#{usuario.privilegio}" />
+				</p:column>
+				<p:column headerText="Data do Cadastro" style="width:150px">
+					<h:outputText value="#{usuario.data}">
+						<f:convertDateTime dateStyle="long" pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:30px">
+					<p:commandButton type="button" icon="fa fa-search"
+						onclick="PF('edit').show()">
+						<f:setPropertyActionListener value="#{usuario}"
+							target="#{usuarioBean.usuarios}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+
+			<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA EDITAR UM USUÁRIO CADASTRADO -->
+
+
+			<p:dialog header="Editar Usuários" widgetVar="edit" resizable="false"
+				modal="true" height="270" width="600">
+
+				<h:form id="fromedituser">
+					<p:panel id="pangialog1" style="width:98%">
 						<h:panelGrid columns="2" cellpadding="2">
 
-							<p:outputLabel for="nome" value="Nome:" />
+							<p:outputLabel for="id" value="Id: " />
+							<p:outputLabel id="id" value="#{usuarioBean.usuario.id}"
+								style="width:150%" required="true" />
+
+							<p:outputLabel for="nome" value="Nome: " />
 							<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
 								style="width:150%" required="true" />
 
-							<p:outputLabel for="email" value="E-mail:" />
+							<p:outputLabel for="email" value="E-mail: " />
 							<p:inputText id="email" value="#{usuarioBean.usuario.email}"
 								style="width:150%" size="30" maxlength="45" required="true"
 								requiredMessage="Digite um E-mail válido"
@@ -68,7 +183,7 @@
 								<p:ajax event="blur" />
 							</p:inputText>
 
-							<p:outputLabel for="privilegio" value="Privilegio:" />
+							<p:outputLabel for="privilegio" value="Privilegio: " />
 							<p:selectOneMenu id="privilegio"
 								value="#{usuarioBean.usuario.privilegio}" style="width:110%"
 								required="true">
@@ -79,32 +194,55 @@
 
 							</p:selectOneMenu>
 
-							<p:outputLabel for="senha" value="Senha:" />
+							<p:outputLabel for="senha" value="Senha: " />
 							<p:password id="senha" value="#{usuarioBean.usuario.senha}"
 								style="width:110%" feedback="true" promptLabel="Digite a senha"
 								weakLabel="Senha fraca" goodLabel="Nível intermediário"
 								strongLabel="Senha forte" required="true" />
 
-							<p:outputLabel for="confsenha" value="Confirmar Senha:" />
+							<p:outputLabel for="confsenha" value="Confirmar Senha :" />
 							<p:password id="confsenha" value="#{usuarioBean.confirmarSenha}"
 								style="width:110%" required="true" />
 
 						</h:panelGrid>
+
 						<div>
 							<p:toolbar style="margin-top: 5px; margin-bottom:5px">
 								<f:facet name="left">
-									<p:commandButton value="salvar"
-										action="#{usuarioBean.salvar()}" icon="fa fa-floppy-o"
-										update=":growl " />
+
+									<p:commandButton value="Atualizar"
+										action="#{usuarioBean.atualizar()}" icon="fa fa-upload"
+										aria-hidden="true" update=":growl :form:fromedituser" />
+
 									<span class="ui-separator"> <span
 										class="ui-icon ui-icon-grip-dotted-vertical" />
 									</span>
+
+
+									<p:commandButton value="Excluir"
+										action="#{usuarioBean.excluir()}" icon="fa fa-trash-o"
+										aria-hidden="true" update=":growl ">
+										<p:confirm header="Confirmation"
+											message="Realmente deseja excluir o procedimento?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+
 								</f:facet>
 							</p:toolbar>
 						</div>
 					</p:panel>
 				</h:form>
 			</p:dialog>
+
+			<div>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+						process="datauser" update=":growl :fromedituser" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</div>
 
 		</h:form>
 	</div>

@@ -45,8 +45,12 @@ public class UsuarioBean implements Serializable {
 	public String salvar() throws Exception {
 		String senha = this.usuario.getSenha();
 		if (!senha.equals(this.confirmarSenha)) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção!",
-					"A senha não foi confirmada corretamente"));
+			
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção! A senha não foi confirmada corretamente", null);
+
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			
+		
 			return null;
 		}
 		usuario.setData(Calendar.getInstance().getTime());

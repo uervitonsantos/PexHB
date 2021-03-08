@@ -8,8 +8,6 @@
 		<jta-data-source>java:jboss/datasources/MySql-DS</jta-data-source>
 		
 		<class>br.com.kambo.modal.Usuario</class>
-		<class>br.com.kambo.modal.Procedimento</class>
-		<class>br.com.kambo.modal.Contatos</class>
 		
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 

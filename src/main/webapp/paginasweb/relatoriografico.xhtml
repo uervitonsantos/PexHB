@@ -9,13 +9,108 @@
 	template="/WEB-INF/template/templateprincipal.xhtml">
 
 	<ui:define name="corpo">
-		<ui:include
-			src="/WEB-INF/componentes/componente_grafico.xhtml" />
 
-	</ui:define>
 
-	<ui:define name="rodape">
-		<h3>Aqui Será o Rodape da Pagina copy@2017</h3>
+		<div>
+
+			<p:growl id="growl" />
+
+			<!-- O CODIGO ABAIXO É REFERENTE AOS BOTÕES PARA CADASTRAR UM NOVO USUÁRIO e PESQUISAR USUARIO JÁ CADASTRADO-->
+
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Cadastrar Novo Usuário" type="button"
+						onclick="PF('user2').show();" process="@this"
+						icon="fa fa-user-plus" actionListener="#{usuarioBean.novo()}" />
+
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" />
+					</span>
+
+					<p:inputText id="globalFilter"
+						onkeyup="PF('usuarioTable').filter()"
+						value="#{usuarioBean.selectedUsuario.email}" style="width:450px"
+						size="30" maxlength="45" required="true"
+						requiredMessage="Digite um E-mail válido"
+						validatorMessage="Email inválido."
+						placeholder="Pesquisar usuário por e-mail">
+						<f:validateRegex
+							pattern="[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,3})" />
+						<p:ajax event="blur" />
+					</p:inputText>
+
+					<p:commandButton icon="fa fa-search"
+						action="#{usuarioBean.buscar()}" update=":growl" />
+
+				</p:toolbarGroup>
+			</p:toolbar>
+
+
+
+
+			<!-- O CODIGO ABAIXO É REFERENTE A TELA PARA CADASTRO DE UM NOVO USUÁRIO -->
+
+
+			<p:dialog header="Cadastro de Usuários" widgetVar="user2"
+				resizable="false" modal="true" height="270" width="600">
+
+				<h:form id="forcaruser">
+					<p:panel id="paineluser" style="width:98%">
+						<h:panelGrid columns="2" cellpadding="2">
+
+							<p:outputLabel for="nome" value="Nome:" />
+							<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
+								style="width:150%" required="true" />
+
+							<p:outputLabel for="email" value="E-mail:" />
+							<p:inputText id="email" value="#{usuarioBean.usuario.email}"
+								style="width:150%" size="30" maxlength="45" required="true"
+								requiredMessage="Digite um E-mail válido"
+								validatorMessage="Email inválido.">
+								<f:validateRegex
+									pattern="[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,3})" />
+								<p:ajax event="blur" />
+							</p:inputText>
+
+							<p:outputLabel for="privilegio" value="Privilegio:" />
+							<p:selectOneMenu id="privilegio"
+								value="#{usuarioBean.usuario.privilegio}" style="width:110%"
+								required="true">
+								<f:selectItem itemValue="" itemLabel="Selecione" />
+								<f:selectItem itemValue="Suporte" itemLabel="Suporte" />
+								<f:selectItem itemValue="Administrador"
+									itemLabel="Administrador" />
+
+							</p:selectOneMenu>
+
+							<p:outputLabel for="senha" value="Senha:" />
+							<p:password id="senha" value="#{usuarioBean.usuario.senha}"
+								style="width:110%" feedback="true" promptLabel="Digite a senha"
+								weakLabel="Senha fraca" goodLabel="Nível intermediário"
+								strongLabel="Senha forte" required="true" />
+
+							<p:outputLabel for="confsenha" value="Confirmar Senha:" />
+							<p:password id="confsenha" value="#{usuarioBean.confirmarSenha}"
+								style="width:110%" required="true" />
+
+						</h:panelGrid>
+						<div>
+							<p:toolbar style="margin-top: 5px; margin-bottom:5px">
+								<f:facet name="left">
+									<p:commandButton value="salvar"
+										action="#{usuarioBean.salvar()}" icon="fa fa-floppy-o"
+										update=":growl :forcaruser" />
+									<span class="ui-separator"> <span
+										class="ui-icon ui-icon-grip-dotted-vertical" />
+									</span>
+								</f:facet>
+							</p:toolbar>
+						</div>
+					</p:panel>
+				</h:form>
+			</p:dialog>
+		</div>
+
 	</ui:define>
 
 
